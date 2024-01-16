@@ -1,6 +1,7 @@
-import zipfile, os
+import zipfile, os 
 from pathlib import Path
 choice=int(input("Enter \n1 if you wish to compress a file or folder \n2 if you wish to decompress a zip\n"))
+
 if(choice==1):
     def backuptozip(folder):
         folder=os.path.abspath(folder)
@@ -23,13 +24,29 @@ if(choice==1):
                 backupzip.write(os.path.join(foldername,filename))
         backupzip.close()
         print("Done")
-    x=input("Enter the file/folder path to be compressed into zipfile in STRING format: ")
-    backuptozip(x)
+    try:
+        x=input("Enter the file/folder absolute path to be compressed into zipfile in STRING format: ")
+        backuptozip(x)
+    except:
+        print("Could not zip files")
 
 elif(choice==2):
     def decompress(folder): 
         examplezip=zipfile.ZipFile(y)
         examplezip.extractall()
         examplezip.close()
-    y=input("Enter the zipfile/folder path to be decompressed in STRING format: ")
-    decompress(y)
+    
+    try:
+        y=input("Enter the zipfile(.zip only) absolute path to be decompressed in STRING format: ")
+        if not os.path.exists(y):
+            print("File not found")
+            raise Exception("File not found")
+        
+        if y.endswith('.zip'):
+            decompress(y)
+    
+    except:
+        print("Could not read file")
+
+else:
+    print("You have chosen the wrong option. Please enter a valid option to proceed.")
